@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">awty</string>
+    <string name="form_alert_msg">Please fill in message to send.</string>
+    <string name="form_alert_phone">Please fill in valid phone number.</string>
+    <string name="form_alert_time">Please input a number greater than zero.</string>
+    <string name="phone_number">Phone number (digits only):</string>
+    <string name="minutes_between_each_nag">Minutes between each nag:</string>
+    <string name="enter_message_to_send">Enter message to send:</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+</resources>
