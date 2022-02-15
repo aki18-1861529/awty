@@ -2,10 +2,7 @@ package edu.washington.awty
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +12,7 @@ import android.widget.Toast
 
 lateinit var alarmManager : AlarmManager
 private lateinit var pendingIntent : PendingIntent
+lateinit var sharedPreference : SharedPreferences
 var interval : Long = 0
 var btnState : String = ""
 var msgState : String = ""
@@ -44,6 +42,17 @@ class MainActivity : AppCompatActivity() {
             msgState = savedInstanceState.getString("msg") as String
             phoneState = savedInstanceState.getString("phone") as String
             minState = savedInstanceState.getString("min") as String
+
+            btn.text = btnState
+            findViewById<EditText>(R.id.msgInput).setText(msgState)
+            findViewById<EditText>(R.id.phoneInput).setText(phoneState)
+            findViewById<EditText>(R.id.timeInput).setText(minState)
+        }
+        if (::sharedPreference.isInitialized) {
+            btnState = sharedPreference.getString("btn", "Start") as String
+            msgState = sharedPreference.getString("msg", "") as String
+            phoneState = sharedPreference.getString("phone", "") as String
+            minState = sharedPreference.getString("min", "") as String
 
             btn.text = btnState
             findViewById<EditText>(R.id.msgInput).setText(msgState)
@@ -89,6 +98,22 @@ class MainActivity : AppCompatActivity() {
                 alarmManager.cancel(pendingIntent)
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        sharedPreference = getSharedPreferences("AWTY_PREFERENCES", MODE_PRIVATE)
+        val editor = sharedPreference.edit()
+        val btn = findViewById<Button>(R.id.statusBtn).text.toString()
+        val msg = findViewById<EditText>(R.id.msgInput).text.toString()
+        val phone = findViewById<EditText>(R.id.phoneInput).text.toString()
+        val min = findViewById<EditText>(R.id.timeInput).text.toString()
+        editor.putString("btn", btn)
+        editor.putString("msg", msg)
+        editor.putString("phone", phone)
+        editor.putString("min", min)
+        editor.commit()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
